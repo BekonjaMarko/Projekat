@@ -162,9 +162,173 @@ int main() {
     // build and compile shaders
     // -------------------------
     Shader ourShader("resources/shaders/2.model_lighting.vs", "resources/shaders/2.model_lighting.fs");
+    Shader ourShader1("resources/shaders/shader1.vs", "resources/shaders/shader1.fs");
+    Shader ourShader2("resources/shaders/shader2.vs", "resources/shaders/shader2.fs");
+    Shader ourShader3("resources/shaders/shader2.vs", "resources/shaders/shader2.fs");
+    float vertices1[] = {
+            // Right face
+            // Positions         // Texture Coords
+            0.5f,  0.5f, -0.5f,  1.0f, 1.0f,  // top right
+            0.5f, -0.5f, -0.5f,  1.0f, 0.0f,  // bottom right
+            0.5f, -0.5f,  0.5f,  0.0f, 0.0f,  // bottom front
+            0.5f,  0.5f, -0.5f,  1.0f, 1.0f,  // top right
+            0.5f, -0.5f,  0.5f,  0.0f, 0.0f,  // bottom front
+            0.5f,  0.5f,  0.5f,  0.0f, 1.0f,  // top front
 
+            // Top face
+            // Positions         // Texture Coords
+            0.5f,  0.5f, -0.5f,  1.0f, 0.0f,  // top right
+            -0.5f,  0.5f, -0.5f,  0.0f, 0.0f,  // top left
+            -0.5f,  0.5f,  0.5f,  0.0f, 1.0f,  // bottom left
+            0.5f,  0.5f, -0.5f,  1.0f, 0.0f,  // top right
+            -0.5f,  0.5f,  0.5f,  0.0f, 1.0f,  // bottom left
+            0.5f,  0.5f,  0.5f,  1.0f, 1.0f,  // bottom right
+
+            // Back face
+            // Positions         // Texture Coords
+            0.5f,  0.5f,  0.5f,  0.0f, 0.0f,  // top right
+            -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,  // top left
+            -0.5f, -0.5f,  0.5f,  1.0f, 1.0f,  // bottom left
+            0.5f,  0.5f,  0.5f,  0.0f, 0.0f,  // top right
+            -0.5f, -0.5f,  0.5f,  1.0f, 1.0f,  // bottom left
+            0.5f, -0.5f,  0.5f,  0.0f, 1.0f,  // bottom right
+
+            // Bottom face
+            // Positions         // Texture Coords
+            0.5f, -0.5f, -0.5f,  1.0f, 1.0f,  // top right
+            -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,  // top left
+            -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,  // bottom left
+            0.5f, -0.5f, -0.5f,  1.0f, 1.0f,  // top right
+            -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,  // bottom left
+            0.5f, -0.5f,  0.5f,  1.0f, 0.0f   // bottom right
+
+
+    };
+    unsigned VBO, VAO;
+    glGenVertexArrays(1,&VAO);
+    glBindVertexArray(VAO);
+
+
+    glGenBuffers(1,&VBO);
+    glBindBuffer(GL_ARRAY_BUFFER,VBO);
+    glBufferData(GL_ARRAY_BUFFER,sizeof(vertices1),vertices1,GL_STATIC_DRAW);
+
+    glVertexAttribPointer(0,3,GL_FLOAT,GL_FALSE,5*sizeof(float),(void*)0);
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(1,2,GL_FLOAT,GL_FALSE,5*sizeof(float),(void*)(3*sizeof(float)));
+    glEnableVertexAttribArray(1);
+
+
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,0);
+    glBindBuffer(GL_ARRAY_BUFFER,0);
+    glBindVertexArray(0);
+/*
+    unsigned VBO1, VAO1;
+    glGenVertexArrays(1,&VAO1);
+    glBindVertexArray(VAO1);
+
+
+    glGenBuffers(1,&VBO1);
+    glBindBuffer(GL_ARRAY_BUFFER,VBO1);
+    glBufferData(GL_ARRAY_BUFFER,sizeof(vertices2),vertices2,GL_STATIC_DRAW);
+
+    glVertexAttribPointer(0,3,GL_FLOAT,GL_FALSE,5*sizeof(float),(void*)0);
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(1,2,GL_FLOAT,GL_FALSE,5*sizeof(float),(void*)(3*sizeof(float)));
+    glEnableVertexAttribArray(1);
+
+
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,0);
+    glBindBuffer(GL_ARRAY_BUFFER,0);
+    glBindVertexArray(0);
+*/
+    unsigned tex0Id;
+    glGenTextures(1,&tex0Id);
+    glBindTexture(GL_TEXTURE_2D,tex0Id);
+
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_REPEAT);
+
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+
+    int width,height,nrchannel;
+    stbi_set_flip_vertically_on_load(true);
+    unsigned char* data = stbi_load("resources/textures/plocice.png",&width,&height,&nrchannel,0);
+
+    if(data){
+
+        glTexImage2D(GL_TEXTURE_2D,0,GL_RGB,width,height,0,GL_RGB,GL_UNSIGNED_BYTE,data);
+        glGenerateMipmap(GL_TEXTURE_2D);
+
+    }else{
+        std::cout<<"Failed to load kontejner texture!\n";
+    }
+
+    stbi_image_free(data);
+    ourShader1.use();
+    ourShader1.setInt("tex0",0);
+
+    unsigned tex1Id;
+    glGenTextures(1,&tex1Id);
+    glBindTexture(GL_TEXTURE_2D,tex1Id);
+
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_REPEAT);
+
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+
+    stbi_set_flip_vertically_on_load(true);
+    data = stbi_load("resources/textures/woodfloor2.png",&width,&height,&nrchannel,0);
+
+    if(data){
+
+        glTexImage2D(GL_TEXTURE_2D,0,GL_RGB,width,height,0,GL_RGB,GL_UNSIGNED_BYTE,data);
+        glGenerateMipmap(GL_TEXTURE_2D);
+
+    }else{
+        std::cout<<"Failed to load smajli texture!\n";
+    }
+
+    stbi_image_free(data);
+
+    ourShader2.use();
+
+    ourShader2.setInt("tex0", 0);
+
+    unsigned tex2Id;
+    glGenTextures(1,&tex2Id);
+    glBindTexture(GL_TEXTURE_2D,tex2Id);
+
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_REPEAT);
+
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+
+    stbi_set_flip_vertically_on_load(true);
+    data = stbi_load("resources/textures/plafon1.jpg",&width,&height,&nrchannel,0);
+
+    if(data){
+
+        glTexImage2D(GL_TEXTURE_2D,0,GL_RGB,width,height,0,GL_RGB,GL_UNSIGNED_BYTE,data);
+        glGenerateMipmap(GL_TEXTURE_2D);
+
+    }else{
+        std::cout<<"Failed to load plafon texture!\n";
+    }
+
+    stbi_image_free(data);
+
+    ourShader3.use();
+
+    ourShader3.setInt("tex0", 0);
+
+    //----------------------------------------------
     // load models
     // -----------
+
     Model ourModel("resources/objects/backpack/backpack.obj");
     ourModel.SetShaderTextureNamePrefix("material.");
 
@@ -179,10 +343,8 @@ int main() {
     pointLight.quadratic = 0.032f;
 
 
-
     // draw in wireframe
     //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-
     // render loop
     // -----------
     while (!glfwWindowShouldClose(window)) {
@@ -199,10 +361,48 @@ int main() {
 
         // render
         // ------
-        glClearColor(programState->clearColor.r, programState->clearColor.g, programState->clearColor.b, 1.0f);
+        //glClearColor(programState->clearColor.r, programState->clearColor.g, programState->clearColor.b, 1.0f);
+        glClearColor(0.0f, 0.0f,1.0f, 1.0f);
+
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, tex0Id);
+
+        glBindVertexArray(VAO);
+        glm::mat4 projection = glm::perspective(glm::radians(programState->camera.Zoom),
+                                                (float) SCR_WIDTH / (float) SCR_HEIGHT, 0.1f, 100.0f);
+        glm::mat4 model = glm::mat4(1.0f);
+       // model = glm::rotate(model,glm::radians(20.0f),)
+        model = glm::rotate(model,glm::radians(30.0f),glm::vec3(0.0f,1.0f,0.0f));
+        model = glm::scale(model,glm::vec3(30.0,30.0,30.0));
+        ourShader1.setMat4("model",model);
+        ourShader1.setMat4("projection",projection);
+        glm::mat4 view1 = programState->camera.GetViewMatrix();
+        ourShader1.setMat4("view",view1);
+        glDrawArrays(GL_TRIANGLES, 0, 6);
+
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D,tex2Id);
+        ourShader3.setMat4("model",model);
+        ourShader3.setMat4("projection",projection);
+        ourShader3.setMat4("view",view1);
+        glDrawArrays(GL_TRIANGLES,6,6);
+
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D,tex0Id);
+        glDrawArrays(GL_TRIANGLES,12,6);
+
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D,tex1Id);
+        ourShader2.setMat4("model",model);
+        ourShader2.setMat4("projection",projection);
+        ourShader2.setMat4("view",view1);
+        glDrawArrays(GL_TRIANGLES,18,6);
+
+
         // don't forget to enable shader before setting uniforms
+        /*
         ourShader.use();
         pointLight.position = glm::vec3(4.0 * cos(currentFrame), 4.0f, 4.0 * sin(currentFrame));
         ourShader.setVec3("pointLight.position", pointLight.position);
@@ -215,24 +415,21 @@ int main() {
         ourShader.setVec3("viewPosition", programState->camera.Position);
         ourShader.setFloat("material.shininess", 32.0f);
         // view/projection transformations
-        glm::mat4 projection = glm::perspective(glm::radians(programState->camera.Zoom),
-                                                (float) SCR_WIDTH / (float) SCR_HEIGHT, 0.1f, 100.0f);
+
+
         glm::mat4 view = programState->camera.GetViewMatrix();
-        ourShader.setMat4("projection", projection);
         ourShader.setMat4("view", view);
 
         // render the loaded model
-        glm::mat4 model = glm::mat4(1.0f);
+
         model = glm::translate(model,
                                programState->backpackPosition); // translate it down so it's at the center of the scene
         model = glm::scale(model, glm::vec3(programState->backpackScale));    // it's a bit too big for our scene, so scale it down
         ourShader.setMat4("model", model);
         ourModel.Draw(ourShader);
-
+        */
         if (programState->ImGuiEnabled)
             DrawImGui(programState);
-
-
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------
