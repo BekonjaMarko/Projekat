@@ -168,7 +168,11 @@ int main() {
     Shader ourShader2("resources/shaders/shader2.vs", "resources/shaders/shader2.fs");
     Shader ourShader3("resources/shaders/shader3.vs", "resources/shaders/shader3.fs");
     Shader ourShader4("resources/shaders/shader4.vs", "resources/shaders/shader4.fs");
+    Shader ourShader5("resources/shaders/shader5.vs", "resources/shaders/shader5.fs");
     Shader lightShader("resources/shaders/lightcube.vs", "resources/shaders/lightcube.fs");
+
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_FRONT);
 
     float vertices0[] = {
             // Positions            // Normals           // Texture Coords
@@ -181,28 +185,28 @@ int main() {
             -0.2f, -0.2f, -0.2f,    0.0f, 0.0f, -1.0f,  0.0f, 0.0f,
 
             // Back face
-            -0.2f, -0.2f, 0.2f,     0.0f, 0.0f, 1.0f,   0.0f, 0.0f,
-            0.2f, -0.2f, 0.2f,      0.0f, 0.0f, 1.0f,   1.0f, 0.0f,
-            0.2f,  0.2f, 0.2f,      0.0f, 0.0f, 1.0f,   1.0f, 1.0f,
-            0.2f,  0.2f, 0.2f,      0.0f, 0.0f, 1.0f,   1.0f, 1.0f,
-            -0.2f,  0.2f, 0.2f,     0.0f, 0.0f, 1.0f,   0.0f, 1.0f,
-            -0.2f, -0.2f, 0.2f,     0.0f, 0.0f, 1.0f,   0.0f, 0.0f,
+            0.2f, -0.2f, 0.2f,      0.0f, 0.0f, 1.0f,   0.0f, 0.0f,
+            -0.2f, -0.2f, 0.2f,     0.0f, 0.0f, 1.0f,   1.0f, 0.0f,
+            -0.2f,  0.2f, 0.2f,     0.0f, 0.0f, 1.0f,   1.0f, 1.0f,
+            -0.2f,  0.2f, 0.2f,     0.0f, 0.0f, 1.0f,   1.0f, 1.0f,
+            0.2f,  0.2f, 0.2f,      0.0f, 0.0f, 1.0f,   0.0f, 1.0f,
+            0.2f, -0.2f, 0.2f,      0.0f, 0.0f, 1.0f,   0.0f, 0.0f,
 
             // Left face
-            -0.2f,  0.2f,  0.2f,    -1.0f, 0.0f, 0.0f,  1.0f, 0.0f,
-            -0.2f,  0.2f, -0.2f,    -1.0f, 0.0f, 0.0f,  1.0f, 1.0f,
-            -0.2f, -0.2f, -0.2f,    -1.0f, 0.0f, 0.0f,  0.0f, 1.0f,
-            -0.2f, -0.2f, -0.2f,    -1.0f, 0.0f, 0.0f,  0.0f, 1.0f,
-            -0.2f, -0.2f,  0.2f,    -1.0f, 0.0f, 0.0f,  0.0f, 0.0f,
-            -0.2f,  0.2f,  0.2f,    -1.0f, 0.0f, 0.0f,  1.0f, 0.0f,
+            -0.2f,  0.2f, -0.2f,    -1.0f, 0.0f, 0.0f,  1.0f, 0.0f,
+            -0.2f,  0.2f,  0.2f,    -1.0f, 0.0f, 0.0f,  1.0f, 1.0f,
+            -0.2f, -0.2f,  0.2f,    -1.0f, 0.0f, 0.0f,  0.0f, 1.0f,
+            -0.2f, -0.2f,  0.2f,    -1.0f, 0.0f, 0.0f,  0.0f, 1.0f,
+            -0.2f, -0.2f, -0.2f,    -1.0f, 0.0f, 0.0f,  0.0f, 0.0f,
+            -0.2f,  0.2f, -0.2f,    -1.0f, 0.0f, 0.0f,  1.0f, 0.0f,
 
             // Right face
-            0.2f,  0.2f,  0.2f,     1.0f, 0.0f, 0.0f,   0.0f, 0.0f,
-            0.2f,  0.2f, -0.2f,     1.0f, 0.0f, 0.0f,   1.0f, 0.0f,
-            0.2f, -0.2f, -0.2f,     1.0f, 0.0f, 0.0f,   1.0f, 1.0f,
-            0.2f, -0.2f, -0.2f,     1.0f, 0.0f, 0.0f,   1.0f, 1.0f,
-            0.2f, -0.2f,  0.2f,     1.0f, 0.0f, 0.0f,   0.0f, 1.0f,
-            0.2f,  0.2f,  0.2f,     1.0f, 0.0f, 0.0f,   0.0f, 0.0f,
+            0.2f,  0.2f,  0.2f,     1.0f, 0.0f, 0.0f,   1.0f, 0.0f,
+            0.2f, -0.2f,  0.2f,     1.0f, 0.0f, 0.0f,   1.0f, 1.0f,
+            0.2f, -0.2f, -0.2f,     1.0f, 0.0f, 0.0f,   0.0f, 1.0f,
+            0.2f, -0.2f, -0.2f,     1.0f, 0.0f, 0.0f,   0.0f, 1.0f,
+            0.2f,  0.2f, -0.2f,     1.0f, 0.0f, 0.0f,   0.0f, 0.0f,
+            0.2f,  0.2f,  0.2f,     1.0f, 0.0f, 0.0f,   1.0f, 0.0f,
 
             // Bottom face
             -0.2f, -0.2f, -0.2f,    0.0f, -1.0f, 0.0f,  0.0f, 1.0f,
@@ -220,6 +224,8 @@ int main() {
             -0.2f,  0.2f,  0.2f,    0.0f, 1.0f, 0.0f,   0.0f, 0.0f,
             -0.2f,  0.2f, -0.2f,    0.0f, 1.0f, 0.0f,   0.0f, 1.0f
     };
+
+
     float vertices1[] = {
             // Right face
             // Positions         // Normals          // Texture Coords
@@ -307,20 +313,24 @@ int main() {
     ourShader3.use();
     ourShader3.setInt("material.diffuse",0);
 
-    unsigned int diffuseMap4 = loadTexture(FileSystem::getPath("resources/textures/kocka.jpg").c_str());
+    unsigned int diffuseMap4 = loadTexture(FileSystem::getPath("resources/textures/zemlja.png").c_str());
     ourShader4.use();
     ourShader4.setInt("material.diffuse",0);
 
+    unsigned int diffuseMap5 = loadTexture(FileSystem::getPath("resources/textures/plant1.png").c_str());
+    ourShader5.use();
+    ourShader5.setInt("material.diffuse",0);
 
     //----------------------------------------------
     // load models
+
     // -----------
 
     Model ourModel("resources/objects/backpack/backpack.obj");
     ourModel.SetShaderTextureNamePrefix("material.");
 
     PointLight& pointLight = programState->pointLight;
-    pointLight.position = glm::vec3(4.0, 4.0, 4.0);
+    pointLight.position = glm::vec3(1.0, 1.0, 1.0);
     pointLight.ambient = glm::vec3(0.1, 0.1, 0.1);
     pointLight.diffuse = glm::vec3(0.6, 0.6, 0.6);
     pointLight.specular = glm::vec3(1.0, 1.0, 1.0);
@@ -341,11 +351,14 @@ int main() {
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
 
+
+
         // input
         // -----
         processInput(window);
 
 
+        //pointLight.position = glm::vec3(4.0 * cos(currentFrame), 4.0f, 4.0 * sin(currentFrame));
         // render
         // ------
         glClearColor(programState->clearColor.r, programState->clearColor.g, programState->clearColor.b, 1.0f);
@@ -358,12 +371,12 @@ int main() {
         ourShader1.setVec3("viewPos", programState->camera.Position);
 
 
-        ourShader1.setVec3("pointlight.ambient", 0.2f, 0.2f, 0.2f);
-        ourShader1.setVec3("pointlight.diffuse", 0.5f, 0.5f, 0.5f);
-        ourShader1.setVec3("pointlight.specular", 1.0f, 1.0f, 1.0f);
+        ourShader1.setVec3("pointLight.ambient", 0.2f, 0.2f, 0.2f);
+        ourShader1.setVec3("pointLight.diffuse", 0.5f, 0.5f, 0.5f);
+        ourShader1.setVec3("pointLight.specular", 1.0f, 1.0f, 1.0f);
 
         ourShader1.setVec3("material.specular", 0.5f, 0.5f, 0.5f);
-        ourShader1.setFloat("material.shininess", 64.0f);
+        ourShader1.setFloat("material.shininess", 100.0f);
 
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, diffuseMap1);
@@ -387,12 +400,12 @@ int main() {
         ourShader3.setVec3("viewPos", programState->camera.Position);
 
 
-        ourShader3.setVec3("pointlight.ambient", 0.2f, 0.2f, 0.2f);
-        ourShader3.setVec3("pointlight.diffuse", 0.5f, 0.5f, 0.5f);
-        ourShader3.setVec3("pointlight.specular", 1.0f, 1.0f, 1.0f);
+        ourShader3.setVec3("pointLight.ambient", 0.2f, 0.2f, 0.2f);
+        ourShader3.setVec3("pointLight.diffuse", 0.5f, 0.5f, 0.5f);
+        ourShader3.setVec3("pointLight.specular", 1.0f, 1.0f, 1.0f);
 
         ourShader3.setVec3("material.specular", 0.5f, 0.5f, 0.5f);
-        ourShader3.setFloat("material.shininess", 64.0f);
+        ourShader3.setFloat("material.shininess", 80.0f);
 
 
         glActiveTexture(GL_TEXTURE0);
@@ -417,12 +430,12 @@ int main() {
         ourShader2.setVec3("viewPos", programState->camera.Position);
 
 
-        ourShader2.setVec3("pointlight.ambient", 0.2f, 0.2f, 0.2f);
-        ourShader2.setVec3("pointlight.diffuse", 0.5f, 0.5f, 0.5f);
-        ourShader2.setVec3("pointlight.specular", 1.0f, 1.0f, 1.0f);
+        ourShader2.setVec3("pointLight.ambient", 0.2f, 0.2f, 0.2f);
+        ourShader2.setVec3("pointLight.diffuse", 0.5f, 0.5f, 0.5f);
+        ourShader2.setVec3("pointLight.specular", 1.0f, 1.0f, 1.0f);
 
         ourShader2.setVec3("material.specular", 0.5f, 0.5f, 0.5f);
-        ourShader2.setFloat("material.shininess", 64.0f);
+        ourShader2.setFloat("material.shininess", 50.0f);
 
 
         glActiveTexture(GL_TEXTURE0);
@@ -433,19 +446,21 @@ int main() {
         glDrawArrays(GL_TRIANGLES,18,6);
 
         //----------------------------------------------------------------------------------------------------------------
-        /*
+
         ourShader4.use();
         ourShader4.setVec3("pointLight.position", pointLight.position);
         ourShader4.setVec3("viewPos", programState->camera.Position);
 
 
-        ourShader4.setVec3("pointlight.ambient", 0.2f, 0.2f, 0.2f);
-        ourShader4.setVec3("pointlight.diffuse", 0.5f, 0.5f, 0.5f);
-        ourShader4.setVec3("pointlight.specular", 1.0f, 1.0f, 1.0f);
+        ourShader4.setVec3("pointLight.ambient", 0.2f, 0.2f, 0.2f);
+        ourShader4.setVec3("pointLight.diffuse", 0.5f, 0.5f, 0.5f);
+        ourShader4.setVec3("pointLight.specular", 1.0f, 1.0f, 1.0f);
 
         ourShader4.setVec3("material.specular", 0.5f, 0.5f, 0.5f);
-        ourShader4.setFloat("material.shininess", 64.0f);
+        ourShader4.setFloat("material.shininess", 45.0f);
 
+        glEnable(GL_CULL_FACE);
+        glCullFace(GL_FRONT);
 
         glBindVertexArray(VAO1);
         glActiveTexture(GL_TEXTURE0);
@@ -458,7 +473,35 @@ int main() {
         ourShader4.setMat4("view",view1);
         ourShader4.setMat4("projection",projection);
         glDrawArrays(GL_TRIANGLES,0,36);
-        */
+
+        glDisable(GL_CULL_FACE);
+
+        ourShader5.use();
+        ourShader5.setVec3("pointLight.position", pointLight.position);
+        ourShader5.setVec3("viewPos", programState->camera.Position);
+
+
+        ourShader5.setVec3("pointLight.ambient", 0.2f, 0.2f, 0.2f);
+        ourShader5.setVec3("pointLight.diffuse", 0.5f, 0.5f, 0.5f);
+        ourShader5.setVec3("pointLight.specular", 1.0f, 1.0f, 1.0f);
+
+        ourShader5.setVec3("material.specular", 0.5f, 0.5f, 0.5f);
+        ourShader5.setFloat("material.shininess", 30.0f);
+
+
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D,diffuseMap5);
+
+        model1 = glm::mat4(1.0f);
+        model1 = glm::translate(model1,glm::vec3(1.0f,-6.0f,2.5f));
+        model1 = glm::rotate(model1,glm::radians(30.0f),glm::vec3(0.0f,1.0f,0.0f));
+        model1 = glm::scale(model1,glm::vec3(13.0f,18.0f,13.0f));
+        ourShader5.setMat4("model",model1);
+        ourShader5.setMat4("view",view1);
+        ourShader5.setMat4("projection",projection);
+        glDrawArrays(GL_TRIANGLES,0,6);
+
+
         /*
         ourShader.use();
         ourShader.setVec3("pointLight.position", pointLight.position);
@@ -470,13 +513,15 @@ int main() {
         ourShader.setFloat("pointLight.quadratic", pointLight.quadratic);
         ourShader.setVec3("viewPosition", programState->camera.Position);
         ourShader.setFloat("material.shininess", 32.0f);
-
+        // view/projection transformations
 
         glm::mat4 view = programState->camera.GetViewMatrix();
+        ourShader.setMat4("projection", projection);
         ourShader.setMat4("view", view);
 
         // render the loaded model
 
+        model = glm::mat4(1.0f);
         model = glm::translate(model,
                                programState->backpackPosition); // translate it down so it's at the center of the scene
         model = glm::scale(model, glm::vec3(programState->backpackScale));    // it's a bit too big for our scene, so scale it down
@@ -634,3 +679,5 @@ unsigned int loadTexture(char const * path)
 
     return textureID;
 }
+
+
